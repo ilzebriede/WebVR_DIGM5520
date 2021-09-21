@@ -1,11 +1,29 @@
 <html>
-  <head>
-    <meta charset="UTF-8">
-    <script src="script.js"></script>
-    <!-- <link rel="stylesheet" type="text/css" href="styles.css"> -->
-  </head>
-  <body>
-    <h1>Hello there!</h1>
-    <a href="/me.html">My other page</a>
-  </body>
+
+<head>
+  <meta charset="UTF-8">
+  <style>
+    * {
+      margin: 0px;
+    }
+  </style>
+</head>
+
+<body>
+  <script type="module">
+
+// import the Three.js module:
+import * as THREE from "https://unpkg.com/three@0.126.0/build/three.module.js"; 
+
+// create a renderer with better than default quality:
+const renderer = new THREE.WebGLRenderer({ antialias: true });
+renderer.setPixelRatio(window.devicePixelRatio);
+// make it fill the page
+renderer.setSize(window.innerWidth, window.innerHeight);
+// create and add the <canvas>
+document.body.appendChild(renderer.domElement); 
+
+  </script>
+</body>
+
 </html>
