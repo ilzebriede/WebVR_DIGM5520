@@ -14,14 +14,81 @@
 
 // import the Three.js module:
 import * as THREE from "https://unpkg.com/three@0.126.0/build/three.module.js"; 
+// load in the module:
+import Stats from "https://unpkg.com/three@0.126.0/examples/jsm/libs/stats.module";
+// load in the VRButton module for the "Enter VR" button
+import { VRButton } from 'https://cdn.skypack.dev/three@0.126.0/examples/jsm/webxr/VRButton.js';
 
 // create a renderer with better than default quality:
 const renderer = new THREE.WebGLRenderer({ antialias: true });
 renderer.setPixelRatio(window.devicePixelRatio);
 // make it fill the page
 renderer.setSize(window.innerWidth, window.innerHeight);
+// enable XR option in the renderer
+renderer.xr.enabled = true;
+document.body.appendChild(VRButton.createButton(renderer));
 // create and add the <canvas>
 document.body.appendChild(renderer.domElement); 
+
+// create a perspective camera
+const camera = new THREE.PerspectiveCamera( 
+    75,  // this camera has a 75 degree field of view in the vertical axis
+    window.innerWidth / window.innerHeight, // the aspect ratio matches the size of the window
+    0.05, // anything less than 5cm from the eye will not be drawn
+    100  // anything more than 100m from the eye will not be drawn
+);
+// position the camera 2m in the Z axis and 1.5m in the Y axis
+// the Y axis points up from the ground
+// the Z axis point out of the screen toward you
+camera.position.y = 1,5;
+camera.position.z = 15;
+
+// do this now and whenever the window is resized()
+window.addEventListener("resize", function () {
+  // ensure the renderer fills the page, and the camera aspect ratio matches:
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  camera.aspect = window.innerWidth / window.innerHeight;
+  camera.updateProjectionMatrix();
+}, false);
+
+// add a stats view to the page to monitor performance:
+const stats = new Stats();
+document.body.appendChild(stats.dom);
+
+// create the root of a scene graph
+const scene = new THREE.Scene();
+
+const geometry = new THREE.ConeGeometry( 4, 4, 4);
+const material = new THREE.MeshStandardMaterial();
+
+const pyramid1 = new THREE.Mesh( geometry, material );
+pyramid1.position.y = 0;
+const pyramid2 = new THREE.Mesh( geometry, material );
+pyramid2.position.y = 4;
+pyramid2.rotation.x = 110;
+const pyramid3 = new THREE.Mesh( geometry, material );
+pyramid3.position.y = 8;
+const pyramid4 = new THREE.Mesh( geometry, material );
+pyramid4.position.y = -4;
+pyramid4.rotation.x = 110;
+
+
+const light = new THREE.HemisphereLight(0x7080f0, 0xf04020);
+scene.add( pyramid1, pyramid2, pyramid3, pyramid4, light);
+
+function animate() {
+  stats.begin()
+  // update the scene:
+  pyramid1.rotation.y += 0.01;
+  pyramid2.rotation.y += 0.01;
+
+  // draw the scene:
+  renderer.render( scene, camera );
+
+  stats.end()
+};
+// start!
+renderer.setAnimationLoop(animate);
 
   </script>
 </body>
