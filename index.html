@@ -56,10 +56,18 @@ const stats = new Stats();
 document.body.appendChild(stats.dom);
 
 // create the root of a scene graph
-const scene = new THREE.Scene();
+const scene1 = new THREE.Scene();
+const scene2 = new THREE.Scene();
 
 const geometry = new THREE.ConeGeometry( 4, 4, 4);
 const material = new THREE.MeshStandardMaterial();
+const geometry2 = new THREE.BufferGeometry();
+const wireframe = new THREE.WireframeGeometry( geometry );
+const line = new THREE.LineSegments( wireframe );
+line.material.depthTest = false;
+line.material.opacity = 0.5;
+line.material.transparent = true;
+
 
 const pyramid1 = new THREE.Mesh( geometry, material );
 pyramid1.position.y = 0;
@@ -74,7 +82,9 @@ pyramid4.rotation.x = 110;
 
 
 const light = new THREE.HemisphereLight(0x7080f0, 0xf04020);
-scene.add( pyramid1, pyramid2, pyramid3, pyramid4, light);
+
+scene1.add( line, pyramid1, pyramid2, pyramid3, pyramid4, light);
+scene2.add( );
 
 function animate() {
   stats.begin()
@@ -83,7 +93,7 @@ function animate() {
   pyramid2.rotation.y += 0.01;
 
   // draw the scene:
-  renderer.render( scene, camera );
+  renderer.render( scene1, camera );
 
   stats.end()
 };
