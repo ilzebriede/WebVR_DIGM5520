@@ -61,7 +61,11 @@ const scene2 = new THREE.Scene();
 
 const geometry = new THREE.ConeGeometry( 4, 4, 4);
 const material = new THREE.MeshStandardMaterial();
-const geometry2 = new THREE.BufferGeometry();
+const material2 = new THREE.MeshBasicMaterial( {
+  color: 0xe0eff,
+  wireframe: true
+});
+//const geometry2 = new THREE.BufferGeometry();
 const wireframe = new THREE.WireframeGeometry( geometry );
 const line = new THREE.LineSegments( wireframe );
 line.material.depthTest = false;
@@ -71,26 +75,43 @@ line.material.transparent = true;
 
 const pyramid1 = new THREE.Mesh( geometry, material );
 pyramid1.position.y = 0;
+const pyramid11 = new THREE.Mesh( geometry, material2 );
+pyramid11.position.x = 2;
 const pyramid2 = new THREE.Mesh( geometry, material );
 pyramid2.position.y = 4;
 pyramid2.rotation.x = 110;
+const pyramid22 = new THREE.Mesh( geometry, material2 );
+pyramid22.position.x = 2;
+pyramid22.position.y = 4;
+pyramid22.rotation.x = 110;
 const pyramid3 = new THREE.Mesh( geometry, material );
 pyramid3.position.y = 8;
+const pyramid33 = new THREE.Mesh( geometry, material2 );
+pyramid33.position.x = 2;
+pyramid33.position.y = 8;
 const pyramid4 = new THREE.Mesh( geometry, material );
 pyramid4.position.y = -4;
 pyramid4.rotation.x = 110;
+const pyramid44 = new THREE.Mesh( geometry, material2 );
+pyramid44.position.x = 2;
+pyramid44.position.y = -4;
+pyramid44.rotation.x = 110;
+
+//I need to figure out how to add multiple objects into a group
 
 
 const light = new THREE.HemisphereLight(0x7080f0, 0xf04020);
 
-scene1.add( line, pyramid1, pyramid2, pyramid3, pyramid4, light);
+scene1.add( line, pyramid1, pyramid11, pyramid2, pyramid22, pyramid3, pyramid33, pyramid4, pyramid44, light);
 scene2.add( );
 
 function animate() {
   stats.begin()
   // update the scene:
   pyramid1.rotation.y += 0.01;
+  pyramid11.rotation.y += 0.01;
   pyramid2.rotation.y += 0.01;
+  pyramid22.rotation.y += 0.01;
 
   // draw the scene:
   renderer.render( scene1, camera );
